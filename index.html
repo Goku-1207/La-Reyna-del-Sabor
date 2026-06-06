@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>La Reyna del Sabor</title>
+  <link rel="stylesheet" href="css/styles.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Bebas+Neue&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- ===== PANTALLA 1: BIENVENIDA ===== -->
+<div id="screen-welcome" class="screen active">
+  <div class="welcome-bg"></div>
+  <div class="welcome-overlay"></div>
+  <div class="welcome-content">
+    <img src="images/logo.jpg" alt="La Reyna del Sabor" class="welcome-logo"/>
+    <p class="tagline">Donde cada curado es experiencia de los dioses</p>
+    <div class="input-group">
+      <label for="customer-name">¿Cómo te llamas?</label>
+      <input type="text" id="customer-name" placeholder="Escribe tu nombre..." maxlength="30"/>
+    </div>
+    <button class="btn-primary" onclick="startApp()">¡Ver el Menú!</button>
+  </div>
+  <div class="floating-emojis">
+    <span>🌮</span><span>🔥</span><span>🍹</span><span>⭐</span><span>🌶️</span>
+  </div>
+</div>
+
+<!-- ===== PANTALLA 2: MENÚ ===== -->
+<div id="screen-menu" class="screen">
+
+  <!-- Header -->
+  <header class="app-header">
+    <div class="header-inner">
+      <img src="images/logo.jpg" alt="Logo" class="header-logo"/>
+      <div class="header-text">
+        <h1>La Reyna del Sabor</h1>
+        <p id="greeting-text"></p>
+      </div>
+      <button class="cart-btn" onclick="showScreen('screen-cart')">
+        🛒 <span id="cart-count">0</span>
+      </button>
+    </div>
+    <!-- Categorías -->
+    <nav class="category-nav">
+      <button class="cat-btn active" onclick="filterMenu('all', this)">🍽️ Todo</button>
+      <button class="cat-btn" onclick="filterMenu('hamburguesas', this)">🍔 Burgers</button>
+      <button class="cat-btn" onclick="filterMenu('alitas', this)">🍗 Alitas</button>
+      <button class="cat-btn" onclick="filterMenu('papas', this)">🍟 Papas</button>
+      <button class="cat-btn" onclick="filterMenu('crepas', this)">🥞 Crepas</button>
+      <button class="cat-btn" onclick="filterMenu('platanos', this)">🍌 Plátanos</button>
+      <button class="cat-btn" onclick="filterMenu('curados', this)">🍶 Curados</button>
+    </nav>
+  </header>
+
+  <!-- Grid de productos -->
+  <main class="menu-grid" id="menu-grid"></main>
+
+</div>
+
+<!-- ===== PANTALLA 3: CARRITO ===== -->
+<div id="screen-cart" class="screen">
+  <div class="cart-header">
+    <button class="back-btn" onclick="showScreen('screen-menu')">← Regresar</button>
+    <h2>Tu Pedido</h2>
+  </div>
+  <div class="cart-body" id="cart-body">
+    <div class="empty-cart" id="empty-cart">
+      <span>🛒</span>
+      <p>Tu carrito está vacío</p>
+      <button class="btn-secondary" onclick="showScreen('screen-menu')">Ver Menú</button>
+    </div>
+  </div>
+  <div class="cart-footer" id="cart-footer" style="display:none">
+    <div class="total-row">
+      <span>Subtotal</span><span id="subtotal">$0.00</span>
+    </div>
+    <button class="btn-primary full-width" onclick="showScreen('screen-checkout')">Proceder al Pago →</button>
+  </div>
+</div>
+
+<!-- ===== PANTALLA 4: PAGO ===== -->
+<div id="screen-checkout" class="screen">
+  <div class="cart-header">
+    <button class="back-btn" onclick="showScreen('screen-cart')">← Carrito</button>
+    <h2>Pagar</h2>
+  </div>
+  <div class="checkout-body">
+    <div class="order-summary" id="order-summary"></div>
+
+    <div class="payment-section">
+      <h3>Método de Pago</h3>
+      <div class="payment-options">
+        <label class="pay-option">
+          <input type="radio" name="payment" value="efectivo" checked/>
+          <span>💵 Efectivo</span>
+        </label>
+        <label class="pay-option">
+          <input type="radio" name="payment" value="transferencia"/>
+          <span>📱 Transferencia</span>
+        </label>
+        <label class="pay-option">
+          <input type="radio" name="payment" value="tarjeta"/>
+          <span>💳 Tarjeta</span>
+        </label>
+      </div>
+
+      <div id="transfer-info" style="display:none" class="transfer-box">
+        <p>📲 Envía tu pago a:</p>
+        <strong>55 6080-9619</strong>
+        <p>y envía tu comprobante por WhatsApp</p>
+      </div>
+    </div>
+
+    <div class="delivery-section">
+      <h3>¿Cómo lo quieres?</h3>
+      <div class="payment-options">
+        <label class="pay-option">
+          <input type="radio" name="delivery" value="local" checked/>
+          <span>🏠 Para comer aquí</span>
+        </label>
+        <label class="pay-option">
+          <input type="radio" name="delivery" value="llevar"/>
+          <span>🛍️ Para llevar</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="total-final">
+      <span>TOTAL A PAGAR</span>
+      <span id="total-final-amount" class="total-amount"></span>
+    </div>
+
+    <button class="btn-primary full-width" onclick="placeOrder()">🎉 ¡Confirmar Pedido!</button>
+  </div>
+</div>
+
+<!-- ===== PANTALLA 5: CONFIRMACIÓN ===== -->
+<div id="screen-confirm" class="screen">
+  <div class="confirm-content">
+    <div class="confirm-icon">🎉</div>
+    <h2>¡Pedido Confirmado!</h2>
+    <p id="confirm-name"></p>
+    <div class="order-number">
+      Pedido #<span id="order-number"></span>
+    </div>
+    <p class="confirm-msg">Estamos preparando tu pedido con todo el sabor de la Reyna 👑</p>
+    <div class="contact-info">
+      <p>¿Dudas? Llámanos:</p>
+      <a href="tel:5560809619">55 6080-9619</a>
+      <a href="tel:5638263959">56 3826-3959</a>
+    </div>
+    <button class="btn-primary" onclick="resetApp()">Hacer Otro Pedido</button>
+  </div>
+</div>
+
+<!-- ===== MODAL DETALLE ===== -->
+<div id="product-modal" class="modal-overlay" onclick="closeModal(event)">
+  <div class="modal-card">
+    <button class="modal-close" onclick="closeModalBtn()">✕</button>
+    <img id="modal-img" src="" alt=""/>
+    <div class="modal-info">
+      <h3 id="modal-name"></h3>
+      <p id="modal-desc"></p>
+      <div class="modal-variants" id="modal-variants"></div>
+      <div class="modal-footer">
+        <span class="modal-price" id="modal-price"></span>
+        <button class="btn-primary" onclick="addFromModal()">+ Agregar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/menu-data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
